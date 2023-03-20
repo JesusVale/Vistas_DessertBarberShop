@@ -3,7 +3,7 @@ package com.mycompany.vistasdessertbarbershop;
 import java.io.IOException;
 import javafx.fxml.FXML;
 
-public class SecondaryController {
+public class CitaFrmController {
 
     @FXML
     private void switchToPrimary() throws IOException {

@@ -42,6 +42,9 @@ public class PrimaryController implements Initializable {
     private Button buscarBtn;
     
     @FXML
+    private HBox buscadorBox;
+    
+    @FXML
     private VBox citasBox;
 
     @FXML
@@ -69,7 +72,8 @@ public class PrimaryController implements Initializable {
         this.llenarComboBoxEmpleados();
         this.llenarVBox(logicaNegocio.obtenerCitas());
         dateLbl.setText(formatter.format(LocalDateTime.now()));
-        btnCancelarBusqueda.setVisible(false);
+        /*btnCancelarBusqueda.setVisible(false);*/
+        buscadorBox.getChildren().remove(btnCancelarBusqueda);
     }
     
     
@@ -181,12 +185,12 @@ public class PrimaryController implements Initializable {
         
         List<Cita> citasEncontradas =logicaNegocio.obtenerCitasPorCliente(this.buscarTxt.getText());
         this.llenarVBox(citasEncontradas);
-        btnCancelarBusqueda.setVisible(true);
+        buscadorBox.getChildren().add(btnCancelarBusqueda);
     }
     
     public void cancelarBusqueda(){
         this.buscarTxt.setText("");
-        btnCancelarBusqueda.setVisible(false);
+        buscadorBox.getChildren().remove(btnCancelarBusqueda);
         this.peluqueroCbx.setValue("--Selecciona--");
         this.llenarVBox(logicaNegocio.obtenerCitas());
         
@@ -198,7 +202,7 @@ public class PrimaryController implements Initializable {
             return;
         }
         
-        this.btnCancelarBusqueda.setVisible(true);
+        buscadorBox.getChildren().add(btnCancelarBusqueda);
         
         Empleado empleadoSeleccionado = (Empleado) this.peluqueroCbx.getValue();
         

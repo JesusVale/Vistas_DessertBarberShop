@@ -1,0 +1,38 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 20 mar. 2023, 10:16:49
+    Author     : jegav
+*/
+
+.boton-normal{
+    -fx-background-color: black;
+    -fx-border-style: none;
+    -fx-background-radius: 0;
+    cursor: pointer;
+}
+
+.boton-normal:hover{
+    -fx-background-color: #303030;
+    -fx-cursor: hand;
+}
+
+.citas-txt:focused{
+    -fx-border-style: solid;
+    -fx-border-color:black;
+    -fx-border-width: 1;
+    -fx-background-insets: 0;
+    -fx-focus-color: transparent;
+}
+
+
+.boton-hover{
+    -fx-background-color: black;
+}
+
+.boton-hover:hover{
+    -fx-background-color: #303030;
+    -fx-cursor: hand;
+}
