@@ -9,12 +9,17 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -25,6 +30,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 import org.example.fachadas.ILogicaNegocio;
 import org.example.fachadas.LogicaNegocio;
 /*import org.example.fachadas.ILogicaNegocio;
@@ -58,6 +64,9 @@ public class PrimaryController implements Initializable {
 
     @FXML
     private Button rightBtn;
+    
+    @FXML
+    private Button nuevaCitaBtn;
     
     @FXML
     private Button btnCancelarBusqueda;
@@ -207,6 +216,30 @@ public class PrimaryController implements Initializable {
         Empleado empleadoSeleccionado = (Empleado) this.peluqueroCbx.getValue();
         
         this.llenarVBox(this.logicaNegocio.obtenerCitasPorEmpleado(empleadoSeleccionado));
+    }
+    
+    public void mostrarPantallaCita(){
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/mycompany/vistasdessertbarbershop/CitaFrm.fxml"));
+        try {
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.show();
+            
+            cerrarPantalla();
+            
+        } catch (IOException ex) {
+            Logger.getLogger(PrimaryController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    
+    public void cerrarPantalla(){
+        Stage stage  = (Stage) this.nuevaCitaBtn.getScene().getWindow();
+        stage.close();
+            
+
     }
 
 }

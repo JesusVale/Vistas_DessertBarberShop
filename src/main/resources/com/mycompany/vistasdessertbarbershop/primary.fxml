@@ -77,7 +77,7 @@
                   <Insets left="10.0" />
                </padding>
             </HBox>
-            <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="36.0" style="-fx-background-radius: 6; -fx-background-color: black;" styleClass="boton-hover" stylesheets="@styles.css">
+            <Button fx:id="nuevaCitaBtn" mnemonicParsing="false" onAction="#mostrarPantallaCita" prefHeight="31.0" prefWidth="36.0" style="-fx-background-radius: 6; -fx-background-color: black;" styleClass="boton-hover" stylesheets="@styles.css">
                <graphic>
                   <FontAwesomeIconView fill="WHITE" glyphName="CALENDAR" size="20" wrappingWidth="18.342808723449707" />
                </graphic>
