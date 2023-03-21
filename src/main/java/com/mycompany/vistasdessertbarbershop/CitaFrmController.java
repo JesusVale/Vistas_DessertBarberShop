@@ -4,8 +4,11 @@ import com.roberto_rw.entidades.Cita;
 import com.roberto_rw.entidades.Cliente;
 import com.roberto_rw.entidades.Empleado;
 import com.roberto_rw.entidades.Servicio;
+import com.roberto_rw.entidades.Usuario;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -15,9 +18,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextField;
 import org.example.fachadas.ILogicaNegocio;
 import org.example.fachadas.LogicaNegocio;
-import tornadofx.control.DateTimePicker;
+//import tornadofx.control.DateTimePicker;
 
 public class CitaFrmController implements Initializable{
 
@@ -46,17 +51,27 @@ public class CitaFrmController implements Initializable{
 
     @FXML
     private ComboBox<Object> cboServicio;
+    
+    @FXML
+    private DatePicker dtpFechaCita;
 
     @FXML
-    private DateTimePicker horaFin;
+    private TextField txtHoraFin;
 
     @FXML
-    private DateTimePicker horaIn;
+    private TextField txtHoraInicio;
+
+//    @FXML
+//    private DateTimePicker horaFin;
+//
+//    @FXML
+//    private DateTimePicker horaIn;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        System.out.println("Xd");
-        
+        llenarComboBoxClientes();
+        llenarComboBoxEmpleado();
+        llenarComboBoxServicio();
     }
     
     public void initComponents(Cita cita){
@@ -99,9 +114,24 @@ public class CitaFrmController implements Initializable{
         Cita cita = new Cita();
         cita.setCliente(cliente);
         cita.setEmpleado(peluquero);
-        cita.setFechaFin(this.horaFin.getDateTimeValue());
-        cita.setFechaInicio(this.horaIn.getDateTimeValue());
+        
+        String horaInicio= txtHoraInicio.getText();
+        String horasMinutosInicio[]= horaInicio.split(":");
+        String horaFin= txtHoraFin.getText();
+        String horasMinutosFin[]= horaFin.split(":");
+        LocalDateTime fechaDesde= dtpFechaCita.getValue().atTime(Integer.parseInt(horasMinutosInicio[0]), Integer.parseInt(horasMinutosInicio[1]));
+        LocalDateTime fechaHasta= dtpFechaCita.getValue().atTime(Integer.parseInt(horasMinutosFin[0]), Integer.parseInt(horasMinutosFin[1]));
+        
+        cita.setFechaInicio(fechaDesde);
+        cita.setFechaFin(fechaHasta);
+        
+//        cita.setFechaFin(this.horaFin.getDateTimeValue());
+//        cita.setFechaInicio(this.horaIn.getDateTimeValue());
         cita.setServicio(servicio);
+        
+        Usuario u= new Usuario();
+        u.setId(1L);
+        cita.setUsuario(u);
         logicaNegocio.agregarCita(cita);
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Información");
