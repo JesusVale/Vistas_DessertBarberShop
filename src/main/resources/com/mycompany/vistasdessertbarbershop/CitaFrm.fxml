@@ -33,7 +33,7 @@
                         <FontAwesomeIconView fill="WHITE" glyphName="HOME" size="25" wrappingWidth="23.14274311065674" />
                      </graphic>
                   </Button>
-                  <Button fx:id="btnVolver" mnemonicParsing="false" prefHeight="36.0" prefWidth="59.0" style="-fx-background-color: black;" styleClass="boton-hover" stylesheets="@styles.css" HBox.hgrow="ALWAYS">
+                  <Button fx:id="btnVolver" mnemonicParsing="false" onAction="#showAdministrarCitas" prefHeight="36.0" prefWidth="59.0" style="-fx-background-color: black;" styleClass="boton-hover" stylesheets="@styles.css" HBox.hgrow="ALWAYS">
                      <graphic>
                         <FontAwesomeIconView fill="WHITE" glyphName="LONG_ARROW_LEFT" size="23" wrappingWidth="24.0" />
                      </graphic>
@@ -47,7 +47,7 @@
       </HBox>
       <HBox prefHeight="37.0" prefWidth="844.0">
          <children>
-            <Label text="Agendar Cita">
+            <Label fx:id="nuevaCitasLbl" text="Agendar Cita">
                <font>
                   <Font name="Arial Bold" size="24.0" />
                </font>

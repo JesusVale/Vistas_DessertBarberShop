@@ -9,17 +9,25 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import org.example.fachadas.ILogicaNegocio;
 import org.example.fachadas.LogicaNegocio;
 //import tornadofx.control.DateTimePicker;
@@ -60,6 +68,11 @@ public class CitaFrmController implements Initializable{
 
     @FXML
     private TextField txtHoraInicio;
+    
+    @FXML
+    private Label nuevaCitasLbl;
+    
+    private Cita cita;
 
 //    @FXML
 //    private DateTimePicker horaFin;
@@ -75,7 +88,21 @@ public class CitaFrmController implements Initializable{
     }
     
     public void initComponents(Cita cita){
-        
+        this.cita = cita;
+        if(cita != null){
+            modoEditar();
+        }
+    }
+    
+    private void modoEditar(){
+        nuevaCitasLbl.setText("Editar Cita");
+        this.dtpFechaCita.setValue(cita.getFechaInicio().toLocalDate());
+        this.txtHoraInicio.setText(cita.getFechaInicio().format(DateTimeFormatter.ofPattern("HH:mm")));
+        this.txtHoraFin.setText(cita.getFechaFin().format(DateTimeFormatter.ofPattern("HH:mm")));
+        this.cboPeluquero.setValue(cita.getEmpleado());
+        this.cboClientes.setValue(cita.getCliente());
+        this.cboServicio.setValue(cita.getServicio());
+        this.btnAgendar.setText("Editar Cita");
     }
     
     private void llenarComboBoxEmpleado(){
@@ -107,13 +134,18 @@ public class CitaFrmController implements Initializable{
             //Alerta de que no se ha seleccionado un servicio
         }
 
-
         Empleado peluquero = (Empleado) this.cboPeluquero.getValue();
         Cliente cliente = (Cliente) this.cboClientes.getValue();
         Servicio servicio = (Servicio) this.cboServicio.getValue();
-        Cita cita = new Cita();
-        cita.setCliente(cliente);
-        cita.setEmpleado(peluquero);
+        Cita nuevaCita = null;
+        if(cita != null){
+            nuevaCita = this.logicaNegocio.obtenerCita(cita.getId());
+        } else{
+            nuevaCita = new Cita();
+        }
+        
+        nuevaCita.setCliente(cliente);
+        nuevaCita.setEmpleado(peluquero);
         
         String horaInicio= txtHoraInicio.getText();
         String horasMinutosInicio[]= horaInicio.split(":");
@@ -122,24 +154,65 @@ public class CitaFrmController implements Initializable{
         LocalDateTime fechaDesde= dtpFechaCita.getValue().atTime(Integer.parseInt(horasMinutosInicio[0]), Integer.parseInt(horasMinutosInicio[1]));
         LocalDateTime fechaHasta= dtpFechaCita.getValue().atTime(Integer.parseInt(horasMinutosFin[0]), Integer.parseInt(horasMinutosFin[1]));
         
-        cita.setFechaInicio(fechaDesde);
-        cita.setFechaFin(fechaHasta);
+        nuevaCita.setFechaInicio(fechaDesde);
+        nuevaCita.setFechaFin(fechaHasta);
         
 //        cita.setFechaFin(this.horaFin.getDateTimeValue());
 //        cita.setFechaInicio(this.horaIn.getDateTimeValue());
-        cita.setServicio(servicio);
-        
+        nuevaCita.setServicio(servicio);
         Usuario u= new Usuario();
         u.setId(1L);
-        cita.setUsuario(u);
-        logicaNegocio.agregarCita(cita);
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        nuevaCita.setUsuario(u);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Información");
-        alert.setContentText("Se agregó la cita correctamente");
         alert.setResizable(false);
-        alert.show();
+        if(cita != null){
+            nuevaCita.setId(cita.getId());
+            System.out.println(nuevaCita.getId());
+            System.out.println(nuevaCita.getEmpleado());
+            this.logicaNegocio.actualizarCita(nuevaCita);
+            alert.setContentText("Se realizaron cambios correctamente");
+            alert.showAndWait();
+            
+            showAdministrarCitas();
+        } else{
+            logicaNegocio.agregarCita(nuevaCita);
+            alert.setContentText("Se agregó la cita correctamente");
+            this.vaciarForm();
+            alert.showAndWait();
+        }
+        
+        
+        
     }
     
+    public void cerrarPantalla(){
+        Stage stage  = (Stage) this.btnAgendar.getScene().getWindow();
+        stage.close();
+    }
     
+    public void showAdministrarCitas(){
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/mycompany/vistasdessertbarbershop/primary.fxml"));
+        this.cerrarPantalla();
+        try {
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.show();
+            
+        } catch (IOException ex) {
+            Logger.getLogger(PrimaryController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void vaciarForm(){
+        this.dtpFechaCita.setValue(LocalDate.now());
+        this.cboClientes.setValue("--Selecciona--");
+        this.cboPeluquero.setValue("--Selecciona--");
+        this.cboServicio.setValue("--Selecciona--");
+        this.txtHoraFin.setText("");
+        this.txtHoraInicio.setText("");
+    }
     
 }

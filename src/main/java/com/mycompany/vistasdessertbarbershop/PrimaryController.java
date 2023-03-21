@@ -5,9 +5,12 @@ import com.roberto_rw.entidades.Empleado;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,7 +23,10 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -74,12 +80,14 @@ public class PrimaryController implements Initializable {
     @FXML
     private TextField buscarTxt;
     
+    private LocalDateTime fechaActual = LocalDateTime.now();
+    
     
     @Override
     public void initialize(URL url, ResourceBundle rb){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         this.llenarComboBoxEmpleados();
-        this.llenarVBox(logicaNegocio.obtenerCitas());
+        this.llenarVBox(logicaNegocio.obtenerCitasPorPeriodo(fechaActual.with(LocalTime.MIN), fechaActual.with(LocalTime.MAX)));
         dateLbl.setText(formatter.format(LocalDateTime.now()));
         /*btnCancelarBusqueda.setVisible(false);*/
         buscadorBox.getChildren().remove(btnCancelarBusqueda);
@@ -155,14 +163,14 @@ public class PrimaryController implements Initializable {
         botonEliminar.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent t) {
-                eliminarCita(cita.getId());
+                eliminarCita(cita);
             }
         });
         
         botonEditar.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent t) {
-                editarCita(cita.getId());
+                editarCita(cita);
             }
         });
         
@@ -181,12 +189,47 @@ public class PrimaryController implements Initializable {
         return hBox;
     }
     
-    public void eliminarCita(Long id){
+    public void eliminarCita(Cita cita){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmación");
+        alert.setContentText("¿Está seguro que desea eliminar esta cita?");
+        
+        ButtonType botonSi = new ButtonType("Sí");
+        ButtonType botonNo = new ButtonType("No", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+        alert.getButtonTypes().setAll(botonSi, botonNo);
+
+        Optional<ButtonType> resultado = alert.showAndWait();
+        
+        if(resultado.get() == botonSi){
+            this.logicaNegocio.eliminarCita(cita);
+            Alert alertaInfo = new Alert(Alert.AlertType.INFORMATION);
+            alertaInfo.setTitle("Información");
+            alertaInfo.setContentText("Se eliminó la cita correctamente");
+            alertaInfo.setResizable(false);
+            alertaInfo.show();
+            this.llenarVBox(this.logicaNegocio.obtenerCitas());
+        }
         
     }
     
-    public void editarCita(Long id){
-        
+    public void editarCita(Cita cita){
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/mycompany/vistasdessertbarbershop/CitaFrm.fxml"));
+        try {
+            Parent root = loader.load();
+            CitaFrmController controlador = loader.getController();
+            controlador.initComponents(cita);
+            
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.show();
+            
+            cerrarPantalla();
+            
+        } catch (IOException ex) {
+            Logger.getLogger(PrimaryController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public void buscarCitas(){
@@ -238,8 +281,33 @@ public class PrimaryController implements Initializable {
     public void cerrarPantalla(){
         Stage stage  = (Stage) this.nuevaCitaBtn.getScene().getWindow();
         stage.close();
-            
+    }
+    
+    public void moverHaciaFechaAnterior(){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDateTime fechaAnterior = fechaActual.minusDays(1);
 
+        LocalDateTime fechaPrimeraHora = fechaAnterior.with(LocalTime.MIN); 
+        LocalDateTime fechaUltimaHora = fechaAnterior.with(LocalTime.MAX); 
+
+        this.llenarVBox(logicaNegocio.obtenerCitasPorPeriodo(fechaPrimeraHora, fechaUltimaHora));
+        dateLbl.setText(formatter.format(fechaAnterior));
+
+        fechaActual = fechaAnterior; // guardar la fecha anterior en la variable de instancia
+
+    }
+
+    public void moverHaciaFechaSiguiente(){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDateTime fechaSiguiente = fechaActual.plusDays(1);
+
+        LocalDateTime fechaPrimeraHora = fechaSiguiente.with(LocalTime.MIN); 
+        LocalDateTime fechaUltimaHora = fechaSiguiente.with(LocalTime.MAX); 
+
+        this.llenarVBox(logicaNegocio.obtenerCitasPorPeriodo(fechaPrimeraHora, fechaUltimaHora));
+        dateLbl.setText(formatter.format(fechaSiguiente));
+
+        fechaActual = fechaSiguiente; // guardar la fecha anterior en la variable de instancia
     }
 
 }
