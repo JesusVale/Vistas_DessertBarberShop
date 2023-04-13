@@ -82,6 +82,9 @@ public class PrimaryController implements Initializable {
     
     private LocalDateTime fechaActual = LocalDateTime.now();
     
+    private Empleado empleado;
+    
+    private String buscador;
     
     @Override
     public void initialize(URL url, ResourceBundle rb){
@@ -113,7 +116,6 @@ public class PrimaryController implements Initializable {
         this.citasBox.getChildren().clear();
         for (Cita cita: citas){
             citasBox.getChildren().add(getHBoxCita(cita));
-            System.out.println(cita.getCategoria());
         }
     }
     
@@ -131,9 +133,12 @@ public class PrimaryController implements Initializable {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("H:mm");
         
         Label labelFechas = new Label();
-        labelFechas.setText(formatter.format(cita.getFechaInicio())+ " - "+formatter.format(cita.getFechaFin())+": "+cita.getCliente().getNombre());
+        labelFechas.setText(formatter.format(cita.getFechaInicio())+ " - "+formatter.format(cita.getFechaFin())+": "+cita.getCliente().getNombre()+" - ");
+        
+        Label labelPeluquero = new Label(cita.getEmpleado().getNombre());
         
         labelFechas.setStyle("-fx-font-size: 16; -fx-font-weight: bold;");
+        labelPeluquero.setStyle("-fx-font-size: 16; -fx-font-weight: bold;");
         
         Label emptyLabel = new Label();
         
@@ -146,6 +151,9 @@ public class PrimaryController implements Initializable {
         botones.setSpacing(12);
         botones.setAlignment(Pos.CENTER_LEFT);
         
+        FontAwesomeIconView iconScissors = new FontAwesomeIconView();
+        iconScissors.setGlyphName("SCISSORS");
+        
         FontAwesomeIconView iconEdit = new FontAwesomeIconView();
         iconEdit.setGlyphName("EDIT");
         
@@ -156,9 +164,11 @@ public class PrimaryController implements Initializable {
         Button botonEditar = new Button();
         iconEdit.setSize("1.5em");
         iconDelete.setSize("1.5em");
+        iconScissors.setSize("1.5em");
         botonEditar.setGraphic(iconEdit);
         
         botonEliminar.setGraphic(iconDelete);
+        labelPeluquero.setGraphic(iconScissors);
         
         botonEliminar.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -177,10 +187,16 @@ public class PrimaryController implements Initializable {
         
         Region r = new Region();
         HBox.setHgrow(r, Priority.ALWAYS);
-        
-        botones.getChildren().add(botonEditar);
-        botones.getChildren().add(botonEliminar);       
+        LocalDate hoy = LocalDate.now();
+        LocalDate fechaCita = cita.getFechaInicio().toLocalDate();
+
+        if (fechaCita.isAfter(hoy) || fechaCita.isEqual(hoy)) {
+            botones.getChildren().add(botonEditar);
+            botones.getChildren().add(botonEliminar);
+        }
+              
         hBox.getChildren().add(labelFechas);
+        hBox.getChildren().add(labelPeluquero);
         hBox.getChildren().add(r);
         hBox.getChildren().add(botones);
         
@@ -208,7 +224,7 @@ public class PrimaryController implements Initializable {
             alertaInfo.setContentText("Se eliminó la cita correctamente");
             alertaInfo.setResizable(false);
             alertaInfo.show();
-            this.llenarVBox(this.logicaNegocio.obtenerCitas());
+            this.llenarVBox(logicaNegocio.obtenerCitasPorPeriodo(fechaActual.with(LocalTime.MIN), fechaActual.with(LocalTime.MAX)));
         }
         
     }
@@ -233,32 +249,42 @@ public class PrimaryController implements Initializable {
     }
     
     public void buscarCitas(){
-        this.buscarTxt.getText();
+        this.buscador = this.buscarTxt.getText();
         
         List<Cita> citasEncontradas =logicaNegocio.obtenerCitasPorCliente(this.buscarTxt.getText());
-        this.llenarVBox(citasEncontradas);
-        buscadorBox.getChildren().add(btnCancelarBusqueda);
+        this.llenarVBox(this.logicaNegocio.obtenerCitasPorEmpleadoClienteFecha(fechaActual, empleado, buscador));
+        if(!buscadorBox.getChildren().contains(btnCancelarBusqueda)){
+            buscadorBox.getChildren().add(btnCancelarBusqueda);
+        }
     }
     
     public void cancelarBusqueda(){
         this.buscarTxt.setText("");
         buscadorBox.getChildren().remove(btnCancelarBusqueda);
         this.peluqueroCbx.setValue("--Selecciona--");
-        this.llenarVBox(logicaNegocio.obtenerCitas());
+        this.empleado = null;
+        this.buscador = null;
+        this.llenarVBox(this.logicaNegocio.obtenerCitasPorEmpleadoClienteFecha(fechaActual, empleado, buscador));
         
     }
     
     public void mostrarCitasEmpleado(){
         
         if(this.peluqueroCbx.getValue().equals("--Selecciona--")){
+            this.empleado = null;
+            this.llenarVBox(this.logicaNegocio.obtenerCitasPorEmpleadoClienteFecha(fechaActual, empleado, buscador));
             return;
         }
         
-        buscadorBox.getChildren().add(btnCancelarBusqueda);
-        
+        if(!buscadorBox.getChildren().contains(btnCancelarBusqueda)){
+            buscadorBox.getChildren().add(btnCancelarBusqueda);
+        }
+
         Empleado empleadoSeleccionado = (Empleado) this.peluqueroCbx.getValue();
         
-        this.llenarVBox(this.logicaNegocio.obtenerCitasPorEmpleado(empleadoSeleccionado));
+        this.empleado = empleadoSeleccionado;
+        this.llenarVBox(this.logicaNegocio.obtenerCitasPorEmpleadoClienteFecha(fechaActual, empleado, buscador));
+        
     }
     
     public void mostrarPantallaCita(){
@@ -287,13 +313,11 @@ public class PrimaryController implements Initializable {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDateTime fechaAnterior = fechaActual.minusDays(1);
 
-        LocalDateTime fechaPrimeraHora = fechaAnterior.with(LocalTime.MIN); 
-        LocalDateTime fechaUltimaHora = fechaAnterior.with(LocalTime.MAX); 
-
-        this.llenarVBox(logicaNegocio.obtenerCitasPorPeriodo(fechaPrimeraHora, fechaUltimaHora));
+        
         dateLbl.setText(formatter.format(fechaAnterior));
 
         fechaActual = fechaAnterior; // guardar la fecha anterior en la variable de instancia
+        this.llenarVBox(this.logicaNegocio.obtenerCitasPorEmpleadoClienteFecha(fechaActual, empleado, buscador));
 
     }
 
@@ -301,13 +325,10 @@ public class PrimaryController implements Initializable {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDateTime fechaSiguiente = fechaActual.plusDays(1);
 
-        LocalDateTime fechaPrimeraHora = fechaSiguiente.with(LocalTime.MIN); 
-        LocalDateTime fechaUltimaHora = fechaSiguiente.with(LocalTime.MAX); 
-
-        this.llenarVBox(logicaNegocio.obtenerCitasPorPeriodo(fechaPrimeraHora, fechaUltimaHora));
         dateLbl.setText(formatter.format(fechaSiguiente));
 
         fechaActual = fechaSiguiente; // guardar la fecha anterior en la variable de instancia
+        this.llenarVBox(this.logicaNegocio.obtenerCitasPorEmpleadoClienteFecha(fechaActual, empleado, buscador));
     }
 
 }

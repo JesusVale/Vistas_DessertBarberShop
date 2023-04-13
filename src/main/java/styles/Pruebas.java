@@ -20,9 +20,6 @@ public class Pruebas {
     public static void main(String[] args) {
         ILogicaNegocio logicaNegocio = new LogicaNegocio();
 
-        Cita cita = logicaNegocio.obtenerCita(12L);
-        cita.setEmpleado(logicaNegocio.obtenerEmpleado(3L));
-        logicaNegocio.actualizarCita(cita);
     }
     
 }
