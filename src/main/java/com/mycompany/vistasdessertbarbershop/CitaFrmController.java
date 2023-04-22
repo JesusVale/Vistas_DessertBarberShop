@@ -74,12 +74,6 @@ public class CitaFrmController implements Initializable{
     
     private Cita cita;
 
-//    @FXML
-//    private DateTimePicker horaFin;
-//
-//    @FXML
-//    private DateTimePicker horaIn;
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         llenarComboBoxClientes();
@@ -123,17 +117,41 @@ public class CitaFrmController implements Initializable{
         this.cboServicio.setValue("--Selecciona--");
     }
     
-    public void guardarCita(){
+    private boolean validarCamposVacios(){
+        String msjError = "";
         if(this.cboPeluquero.getValue().equals("--Selecciona--")){
-            //Alerta de que no se ha seleccionado un Peluquero
+            msjError += "No se ha seleccionado un peluquero\n";
         }
         if(this.cboClientes.getValue().equals("--Selecciona--")){
-            //Alerta de que no se ha seleccionado un clientes
+            msjError += "No se ha seleccionado ningun cliente\n";
         }
         if(this.cboServicio.getValue().equals("--Selecciona--")){
-            //Alerta de que no se ha seleccionado un servicio
+            msjError += "No se ha seleccionado ningun servicio\n";
         }
-
+        
+        if(msjError != ""){
+            Alert alertError = new Alert(Alert.AlertType.ERROR);
+            alertError.setContentText(msjError);
+            alertError.showAndWait();
+        }
+        
+        
+        return msjError.equals("");
+        
+    }
+    
+    public LocalDateTime getFecha(String hora){
+        String horasMinutos[]= hora.split(":");
+        return dtpFechaCita.getValue().atTime(Integer.parseInt(horasMinutos[0]), Integer.parseInt(horasMinutos[1]));
+    }
+    
+    
+    public void guardarCita(){   
+        
+        if(!validarCamposVacios()){
+            return;
+        }
+        
         Empleado peluquero = (Empleado) this.cboPeluquero.getValue();
         Cliente cliente = (Cliente) this.cboClientes.getValue();
         Servicio servicio = (Servicio) this.cboServicio.getValue();
@@ -147,18 +165,11 @@ public class CitaFrmController implements Initializable{
         nuevaCita.setCliente(cliente);
         nuevaCita.setEmpleado(peluquero);
         
-        String horaInicio= txtHoraInicio.getText();
-        String horasMinutosInicio[]= horaInicio.split(":");
-        String horaFin= txtHoraFin.getText();
-        String horasMinutosFin[]= horaFin.split(":");
-        LocalDateTime fechaDesde= dtpFechaCita.getValue().atTime(Integer.parseInt(horasMinutosInicio[0]), Integer.parseInt(horasMinutosInicio[1]));
-        LocalDateTime fechaHasta= dtpFechaCita.getValue().atTime(Integer.parseInt(horasMinutosFin[0]), Integer.parseInt(horasMinutosFin[1]));
-        
+        LocalDateTime fechaDesde = getFecha(this.txtHoraInicio.getText());
+        LocalDateTime fechaHasta = getFecha(this.txtHoraFin.getText());
         nuevaCita.setFechaInicio(fechaDesde);
         nuevaCita.setFechaFin(fechaHasta);
-        
-//        cita.setFechaFin(this.horaFin.getDateTimeValue());
-//        cita.setFechaInicio(this.horaIn.getDateTimeValue());
+
         nuevaCita.setServicio(servicio);
         Usuario u= new Usuario();
         u.setId(1L);
@@ -168,22 +179,31 @@ public class CitaFrmController implements Initializable{
         alert.setResizable(false);
         if(cita != null){
             nuevaCita.setId(cita.getId());
-            System.out.println(nuevaCita.getId());
-            System.out.println(nuevaCita.getEmpleado());
-            this.logicaNegocio.actualizarCita(nuevaCita);
+            try {
+                this.logicaNegocio.actualizarCita(nuevaCita);
+            } catch (Exception ex) {
+                alert.setAlertType(Alert.AlertType.ERROR);
+                alert.setContentText(ex.getMessage());
+                alert.showAndWait();
+                return;
+            }
             alert.setContentText("Se realizaron cambios correctamente");
             alert.showAndWait();
             
             showAdministrarCitas();
         } else{
-            logicaNegocio.agregarCita(nuevaCita);
+            try {
+                logicaNegocio.agregarCita(nuevaCita);
+            } catch (Exception ex) {
+                alert.setAlertType(Alert.AlertType.ERROR);
+                alert.setContentText(ex.getMessage());
+                alert.showAndWait();
+                return;
+            }
             alert.setContentText("Se agregó la cita correctamente");
             this.vaciarForm();
             alert.showAndWait();
         }
-        
-        
-        
     }
     
     public void cerrarPantalla(){
