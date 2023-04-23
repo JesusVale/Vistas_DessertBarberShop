@@ -7,14 +7,17 @@ import com.roberto_rw.entidades.Servicio;
 import com.roberto_rw.entidades.Usuario;
 import java.io.IOException;
 import java.net.URL;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.fxml.FXML;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javafx.scene.control.Button;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,7 +25,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -118,7 +120,23 @@ public class CitaFrmController implements Initializable{
     }
     
     private boolean validarCamposVacios(){
+ 
         String msjError = "";
+        
+        msjError = this.validarComboBoxs(msjError);
+        msjError = this.validarFechas(msjError);
+           
+        if(msjError != ""){
+            Alert alertError = new Alert(Alert.AlertType.ERROR);
+            alertError.setContentText(msjError);
+            alertError.showAndWait();
+        }
+
+        return msjError.equals("");
+        
+    }
+    
+    public String validarComboBoxs(String msjError){
         if(this.cboPeluquero.getValue().equals("--Selecciona--")){
             msjError += "No se ha seleccionado un peluquero\n";
         }
@@ -128,16 +146,51 @@ public class CitaFrmController implements Initializable{
         if(this.cboServicio.getValue().equals("--Selecciona--")){
             msjError += "No se ha seleccionado ningun servicio\n";
         }
+        return msjError;
+    }
+    
+    public String validarFechas(String msjError){
+        LocalTime fechaFin = null;
+        LocalTime fechaInicio = null;
         
-        if(msjError != ""){
-            Alert alertError = new Alert(Alert.AlertType.ERROR);
-            alertError.setContentText(msjError);
-            alertError.showAndWait();
+        if(this.dtpFechaCita.getValue() == null){
+            msjError += "No se ha seleccionado ninguna fecha \n";
         }
         
+        if(this.txtHoraInicio.getText().equals("")){
+            msjError += "No se ha seleccionado una hora de inicio \n";
+        }else{
+            String hora = this.txtHoraInicio.getText(); 
+            String patron = "^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$"; 
+            Pattern pattern = Pattern.compile(patron); 
+            Matcher matcher = pattern.matcher(hora); 
+            if(!matcher.matches()){
+                msjError += "Formato de hora de inicio inválido \n";
+            }else{
+                fechaInicio = LocalTime.parse(this.txtHoraInicio.getText());
+            }
+        }
         
-        return msjError.equals("");
+        if(this.txtHoraFin.getText().equals("")){
+            msjError += "No se ha seleccionado una hora de fin \n";
+        }else{
+            String hora = this.txtHoraFin.getText(); 
+            String patron = "^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$"; 
+            Pattern pattern = Pattern.compile(patron); 
+            Matcher matcher = pattern.matcher(hora); 
+            if(!matcher.matches()){
+                msjError += "Formato de hora de fin inválido \n";
+            }else{
+                fechaFin = LocalTime.parse(this.txtHoraFin.getText());
+            }
+        }
         
+        if(fechaInicio != null && fechaFin != null){
+            if(fechaInicio.isAfter(fechaFin)){
+                msjError += "La fecha de inicio no puede estar después de la de fin \n";
+            }
+        }
+        return msjError;
     }
     
     public LocalDateTime getFecha(String hora){
@@ -167,6 +220,11 @@ public class CitaFrmController implements Initializable{
         
         LocalDateTime fechaDesde = getFecha(this.txtHoraInicio.getText());
         LocalDateTime fechaHasta = getFecha(this.txtHoraFin.getText());
+
+        //Se le suma un segundo para que no se empalme con la hora de
+        // terminacion de la cita anterior
+        fechaDesde = fechaDesde.plus(Duration.ofSeconds(1));
+        
         nuevaCita.setFechaInicio(fechaDesde);
         nuevaCita.setFechaFin(fechaHasta);
 
