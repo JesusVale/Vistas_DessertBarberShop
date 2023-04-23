@@ -190,6 +190,11 @@ public class CitaFrmController implements Initializable{
                 msjError += "La fecha de inicio no puede estar después de la de fin \n";
             }
         }
+        
+        if(this.getFecha(this.txtHoraInicio.getText()).isBefore(LocalDateTime.now()) || this.getFecha(this.txtHoraFin.getText()).isBefore(LocalDateTime.now())){
+            msjError += "No se puede agendar una cita que ya pasó \n";
+        }
+        
         return msjError;
     }
     
