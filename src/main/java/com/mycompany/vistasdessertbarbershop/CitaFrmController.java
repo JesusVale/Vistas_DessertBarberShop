@@ -159,6 +159,7 @@ public class CitaFrmController implements Initializable{
         
         if(this.txtHoraInicio.getText().equals("")){
             msjError += "No se ha seleccionado una hora de inicio \n";
+            return msjError;
         }else{
             String hora = this.txtHoraInicio.getText(); 
             String patron = "^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$"; 
@@ -173,6 +174,7 @@ public class CitaFrmController implements Initializable{
         
         if(this.txtHoraFin.getText().equals("")){
             msjError += "No se ha seleccionado una hora de fin \n";
+            return msjError;
         }else{
             String hora = this.txtHoraFin.getText(); 
             String patron = "^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$"; 
