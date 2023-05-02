@@ -167,6 +167,7 @@ public class CitaFrmController implements Initializable{
             Matcher matcher = pattern.matcher(hora); 
             if(!matcher.matches()){
                 msjError += "Formato de hora de inicio inválido \n";
+                return msjError;
             }else{
                 fechaInicio = LocalTime.parse(this.txtHoraInicio.getText());
             }
@@ -182,6 +183,7 @@ public class CitaFrmController implements Initializable{
             Matcher matcher = pattern.matcher(hora); 
             if(!matcher.matches()){
                 msjError += "Formato de hora de fin inválido \n";
+                return msjError;
             }else{
                 fechaFin = LocalTime.parse(this.txtHoraFin.getText());
             }
