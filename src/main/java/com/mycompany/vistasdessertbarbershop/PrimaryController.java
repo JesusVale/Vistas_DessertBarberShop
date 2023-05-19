@@ -30,6 +30,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
@@ -53,6 +54,9 @@ public class PrimaryController implements Initializable {
     
     @FXML
     private Button btnCasa;
+    
+    @FXML
+    private Button btnVolver;
     
     @FXML
     private HBox buscadorBox;
@@ -240,6 +244,9 @@ public class PrimaryController implements Initializable {
             Scene scene = new Scene(root);
             Stage stage = new Stage();
             stage.setScene(scene);
+            stage.setTitle("Editar Cita");
+            stage.setResizable(false);
+            stage.getIcons().add(new Image("./images/icono.png"));
             stage.show();
             
             cerrarPantalla();
@@ -269,18 +276,40 @@ public class PrimaryController implements Initializable {
         
     }
     
-    public void mostrarPantallaEmpleados(){
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/mycompany/vistasdessertbarbershop/AdministrarClientesFrm.fxml"));
-        try{
-            Parent root= loader.load();
-            Scene scene= new Scene(root);
-            Stage stage= new Stage();
+    public void accionVolver(){
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/mycompany/vistasdessertbarbershop/MenuPrincipalFrm.fxml"));
+        try {
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
             stage.setScene(scene);
+            stage.setTitle("Menú Principal");
+            stage.setResizable(false);
+            stage.getIcons().add(new Image("./images/icono.png"));
             stage.show();
-            
-            Stage stage2= (Stage) this.btnCasa.getScene().getWindow();
+
+            Stage stage2 = (Stage) this.btnVolver.getScene().getWindow();
             stage2.close();
-        }catch(IOException ex){
+        } catch (IOException ex) {
+            Logger.getLogger(PrimaryController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void volverPrincipio(){
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/mycompany/vistasdessertbarbershop/MenuPrincipalFrm.fxml"));
+        try {
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setTitle("Menú Principal");
+            stage.setResizable(false);
+            stage.getIcons().add(new Image("./images/icono.png"));
+            stage.show();
+
+            Stage stage2 = (Stage) this.btnCasa.getScene().getWindow();
+            stage2.close();
+        } catch (IOException ex) {
             Logger.getLogger(PrimaryController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -311,6 +340,9 @@ public class PrimaryController implements Initializable {
             Scene scene = new Scene(root);
             Stage stage = new Stage();
             stage.setScene(scene);
+            stage.setTitle("Agregar Cita");
+            stage.setResizable(false);
+            stage.getIcons().add(new Image("./images/icono.png"));
             stage.show();
             
             cerrarPantalla();

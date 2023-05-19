@@ -29,6 +29,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.example.fachadas.ILogicaNegocio;
 import org.example.fachadas.LogicaNegocio;
@@ -78,15 +79,53 @@ public class CitaFrmController implements Initializable{
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        //llenarComboBoxClientes();
-        //llenarComboBoxEmpleado();
-        //llenarComboBoxServicio();
+        llenarComboBoxClientes();
+        llenarComboBoxEmpleado();
+        llenarComboBoxServicio();
     }
     
     public void initComponents(Cita cita){
         this.cita = cita;
         if(cita != null){
             modoEditar();
+        }
+    }
+    
+    public void accionVolver(){
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/mycompany/vistasdessertbarbershop/primary.fxml"));
+        try {
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setTitle("Menú Citas");
+            stage.setResizable(false);
+            stage.getIcons().add(new Image("./images/icono.png"));
+            stage.show();
+
+            Stage stage2 = (Stage) this.btnVolver.getScene().getWindow();
+            stage2.close();
+        } catch (IOException ex) {
+            Logger.getLogger(PrimaryController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void volverPrincipio(){
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/mycompany/vistasdessertbarbershop/MenuPrincipalFrm.fxml"));
+        try {
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setTitle("Menú Principal");
+            stage.setResizable(false);
+            stage.getIcons().add(new Image("./images/icono.png"));
+            stage.show();
+
+            Stage stage2 = (Stage) this.btnCasa.getScene().getWindow();
+            stage2.close();
+        } catch (IOException ex) {
+            Logger.getLogger(PrimaryController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

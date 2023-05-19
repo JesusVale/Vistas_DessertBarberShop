@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import javafx.scene.image.Image;
 
 /**
  * JavaFX App
@@ -17,8 +18,11 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("MenuPrincipalFrm"), 640, 680);
+        scene = new Scene(loadFXML("MenuPrincipalFrm"));
         stage.setScene(scene);
+        stage.setTitle("Menú Principal");
+        stage.setResizable(false);
+        stage.getIcons().add(new Image("./images/icono.png"));
         stage.show();
     }
 

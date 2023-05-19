@@ -10,6 +10,7 @@ import java.time.LocalTime;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -131,7 +132,8 @@ public class AgregarEmpleadoFrmController implements Initializable {
         this.txtHoraSalidaEmpleado.setEditable(false);
     }
 
-    private void confirmarAccion() {
+    @FXML
+    private void confirmarAccion(ActionEvent event) {
         if (modo.equalsIgnoreCase("agregar")) {
             boolean validacion = validarCampos();
             if (validacion) {
