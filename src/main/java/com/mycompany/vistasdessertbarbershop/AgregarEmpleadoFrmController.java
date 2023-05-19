@@ -5,19 +5,27 @@
 package com.mycompany.vistasdessertbarbershop;
 
 import com.roberto_rw.entidades.Empleado;
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalTime;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.stage.Stage;
 import org.example.fachadas.ILogicaNegocio;
 import org.example.fachadas.LogicaNegocio;
 
@@ -130,6 +138,44 @@ public class AgregarEmpleadoFrmController implements Initializable {
         this.txtHoraEntradaEmpleado.setEditable(false);
         this.txtHoraSalidaEmpleado.setText((this.empleado.getHoraSalida().getHour() + 1) + ":" + this.empleado.getHoraSalida().getMinute());
         this.txtHoraSalidaEmpleado.setEditable(false);
+    }
+    
+    public void accionVolver(){
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/mycompany/vistasdessertbarbershop/MenuEmpleados.fxml"));
+        try {
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setTitle("Menú Empleados");
+            stage.setResizable(false);
+            stage.getIcons().add(new Image("./images/icono.png"));
+            stage.show();
+
+            Stage stage2 = (Stage) this.btnVolver.getScene().getWindow();
+            stage2.close();
+        } catch (IOException ex) {
+            Logger.getLogger(AgregarEmpleadoFrmController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void volverPrincipio(){
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/mycompany/vistasdessertbarbershop/MenuPrincipalFrm.fxml"));
+        try {
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setTitle("Menú Principal");
+            stage.setResizable(false);
+            stage.getIcons().add(new Image("./images/icono.png"));
+            stage.show();
+
+            Stage stage2 = (Stage) this.btnCasa.getScene().getWindow();
+            stage2.close();
+        } catch (IOException ex) {
+            Logger.getLogger(AgregarEmpleadoFrmController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @FXML

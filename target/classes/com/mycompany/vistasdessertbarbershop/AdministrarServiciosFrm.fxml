@@ -29,12 +29,12 @@
             <Label prefHeight="18.0" prefWidth="512.0" HBox.hgrow="ALWAYS" />
             <HBox alignment="CENTER_RIGHT" prefHeight="70.0" prefWidth="120.0" spacing="10.0">
                <children>
-                  <Button fx:id="btnCasa" mnemonicParsing="false" prefHeight="36.0" prefWidth="38.0" style="-fx-background-color: black;" styleClass="boton-hover" stylesheets="@styles.css" HBox.hgrow="ALWAYS">
+                  <Button fx:id="btnCasa" mnemonicParsing="false" onAction="#volverPrincipio" prefHeight="36.0" prefWidth="38.0" style="-fx-background-color: black;" styleClass="boton-hover" stylesheets="@styles.css" HBox.hgrow="ALWAYS">
                      <graphic>
                         <FontAwesomeIconView fill="WHITE" glyphName="HOME" size="25" wrappingWidth="23.14274311065674" />
                      </graphic>
                   </Button>
-                  <Button fx:id="btnVolver" mnemonicParsing="false" prefHeight="36.0" prefWidth="59.0" style="-fx-background-color: black;" styleClass="boton-hover" stylesheets="@styles.css" HBox.hgrow="ALWAYS">
+                  <Button fx:id="btnVolver" mnemonicParsing="false" onAction="#accionVolver" prefHeight="36.0" prefWidth="59.0" style="-fx-background-color: black;" styleClass="boton-hover" stylesheets="@styles.css" HBox.hgrow="ALWAYS">
                      <graphic>
                         <FontAwesomeIconView fill="WHITE" glyphName="LONG_ARROW_LEFT" size="23" wrappingWidth="24.0" />
                      </graphic>
@@ -160,7 +160,7 @@
                   <Insets bottom="20.0" left="60.0" right="240.0" top="20.0" />
                </HBox.margin>
             </Button>
-            <Button fx:id="btnCancelar" mnemonicParsing="false" style="-fx-background-color: #E6E6E6;" text="Cancelar">
+            <Button fx:id="btnCancelar" mnemonicParsing="false" onAction="#accionVolver" style="-fx-background-color: #E6E6E6;" text="Cancelar">
                <font>
                   <Font name="Arial Bold Italic" size="18.0" />
                </font>

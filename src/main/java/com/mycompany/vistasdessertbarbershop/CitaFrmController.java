@@ -325,6 +325,9 @@ public class CitaFrmController implements Initializable{
             Scene scene = new Scene(root);
             Stage stage = new Stage();
             stage.setScene(scene);
+            stage.setTitle("Menú Citas");
+            stage.setResizable(false);
+            stage.getIcons().add(new Image("./images/icono.png"));
             stage.show();
             
         } catch (IOException ex) {
