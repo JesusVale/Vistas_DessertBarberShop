@@ -9,6 +9,10 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 /**
  *
@@ -27,6 +31,15 @@ public class MenuClientesController implements Initializable {
     
     @FXML
     private Button btnNuevoCliente;
+    
+    @FXML
+    private HBox buscadorBox;
+    
+    @FXML
+    private TextField txtBuscarCliente;
+    
+    @FXML
+    private VBox boxCliente;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {

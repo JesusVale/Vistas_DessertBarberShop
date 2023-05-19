@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="664.0" prefWidth="884.0" spacing="5.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.vistasdessertbarbershop.PrimaryController">
+<VBox prefHeight="664.0" prefWidth="884.0" spacing="5.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.vistasdessertbarbershop.MenuEmpleadosController">
    <children>
       <HBox alignment="CENTER_LEFT" prefHeight="82.0" prefWidth="844.0" style="-fx-border-color: transparent transparent black transparent;">
          <VBox.margin>
@@ -58,7 +58,7 @@
                      </font>
                   </Label>
                   <TextField fx:id="txtBuscarEmpleado" maxHeight="-Infinity" prefHeight="31.0" prefWidth="450.0" style="-fx-background-radius: 0;" styleClass="citas-txt" stylesheets="@styles.css" HBox.hgrow="ALWAYS" />
-                  <Button fx:id="btnBuscarEmpleado" maxHeight="-Infinity" mnemonicParsing="false" onAction="#buscarCitas" prefHeight="30.0" prefWidth="34.0" styleClass="boton-normal" stylesheets="@styles.css" textFill="WHITE">
+                  <Button fx:id="btnBuscarEmpleado" maxHeight="-Infinity" mnemonicParsing="false" prefHeight="30.0" prefWidth="34.0" styleClass="boton-normal" stylesheets="@styles.css" textFill="WHITE">
                      <graphic>
                         <FontAwesomeIconView fill="WHITE" glyphName="SEARCH" size="20" wrappingWidth="17.771379470825195" />
                      </graphic>
@@ -68,7 +68,7 @@
                   <Insets left="10.0" />
                </padding>
             </HBox>
-            <Button fx:id="btnNuevoEmpleado" mnemonicParsing="false" onAction="#mostrarPantallaCita" prefHeight="31.0" prefWidth="36.0" style="-fx-background-radius: 6; -fx-background-color: black;" styleClass="boton-hover" stylesheets="@styles.css">
+            <Button fx:id="btnNuevoEmpleado" mnemonicParsing="false" prefHeight="31.0" prefWidth="36.0" style="-fx-background-radius: 6; -fx-background-color: black;" styleClass="boton-hover" stylesheets="@styles.css">
                <graphic>
                   <FontAwesomeIconView fill="WHITE" glyphName="USER_PLUS" size="20" wrappingWidth="18.342808723449707" />
                </graphic>
