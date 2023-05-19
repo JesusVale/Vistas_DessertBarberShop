@@ -5,6 +5,8 @@
 package com.mycompany.vistasdessertbarbershop;
 
 import com.roberto_rw.entidades.Cliente;
+import com.roberto_rw.entidades.Servicio;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -13,9 +15,12 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -24,6 +29,9 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 import org.example.fachadas.ILogicaNegocio;
 import org.example.fachadas.LogicaNegocio;
@@ -233,7 +241,7 @@ public class AdministrarClientesFrmController implements Initializable {
         }
         return false;
     }
-    
+      
     private void mostrarMensajeError(String error) {
         Alert alertaInfo = new Alert(Alert.AlertType.WARNING);
         alertaInfo.setTitle("Advertencia");
