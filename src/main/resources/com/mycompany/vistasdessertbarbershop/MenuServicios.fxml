@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="664.0" prefWidth="884.0" spacing="5.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.vistasdessertbarbershop.PrimaryController">
+   <children>
+      <HBox alignment="CENTER_LEFT" prefHeight="82.0" prefWidth="844.0" style="-fx-border-color: transparent transparent black transparent;">
+         <VBox.margin>
+            <Insets bottom="20.0" />
+         </VBox.margin>
+         <children>
+            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
+               <image>
+                  <Image url="@../../../images/logoV.jpg" />
+               </image>
+            </ImageView>
+            <Label prefHeight="18.0" prefWidth="512.0" HBox.hgrow="ALWAYS" />
+            <HBox alignment="CENTER_RIGHT" prefHeight="70.0" prefWidth="114.0" spacing="10.0">
+               <children>
+                  <Button fx:id="btnCasa" mnemonicParsing="false" prefHeight="36.0" prefWidth="38.0" style="-fx-background-color: black;" styleClass="boton-hover" stylesheets="@styles.css" HBox.hgrow="ALWAYS">
+                     <graphic>
+                        <FontAwesomeIconView fill="WHITE" glyphName="HOME" size="25" wrappingWidth="23.14274311065674" />
+                     </graphic>
+                  </Button>
+                  <Button fx:id="btnVolver" mnemonicParsing="false" prefHeight="36.0" prefWidth="59.0" style="-fx-background-color: black;" styleClass="boton-hover" stylesheets="@styles.css" HBox.hgrow="ALWAYS">
+                     <graphic>
+                        <FontAwesomeIconView fill="WHITE" glyphName="LONG_ARROW_LEFT" size="23" wrappingWidth="24.0" />
+                     </graphic>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+         <padding>
+            <Insets bottom="12.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER_LEFT" prefHeight="58.0" prefWidth="814.0" spacing="30.0">
+         <children>
+            <HBox fx:id="buscadorBox" alignment="CENTER_LEFT" prefHeight="53.0" prefWidth="752.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label fx:id="citasLbl" alignment="CENTER" prefHeight="39.0" prefWidth="153.0" styleClass="citasLbl" text="Servicios">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                     <font>
+                        <Font name="Arial Bold" size="24.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="txtBuscarServicio" maxHeight="-Infinity" prefHeight="31.0" prefWidth="574.0" style="-fx-background-radius: 0;" styleClass="citas-txt" stylesheets="@styles.css" HBox.hgrow="ALWAYS" />
+                  <Button fx:id="btnBuscarServicio" maxHeight="-Infinity" mnemonicParsing="false" onAction="#buscarCitas" prefHeight="30.0" prefWidth="34.0" styleClass="boton-normal" stylesheets="@styles.css" textFill="WHITE">
+                     <graphic>
+                        <FontAwesomeIconView fill="WHITE" glyphName="SEARCH" size="20" wrappingWidth="17.771379470825195" />
+                     </graphic>
+                  </Button>
+               </children>
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
+            </HBox>
+            <Button fx:id="btnNuevoServicio" mnemonicParsing="false" onAction="#mostrarPantallaCita" prefHeight="31.0" prefWidth="36.0" style="-fx-background-radius: 6; -fx-background-color: black;" styleClass="boton-hover" stylesheets="@styles.css">
+               <graphic>
+                  <FontAwesomeIconView fill="WHITE" glyphName="PLUS_SQUARE" size="20" wrappingWidth="18.342808723449707" />
+               </graphic>
+            </Button>
+         </children>
+         <padding>
+            <Insets right="25.0" />
+         </padding>
+      </HBox>
+      <Pane prefHeight="403.0" prefWidth="827.0" VBox.vgrow="ALWAYS">
+         <children>
+            <ScrollPane hbarPolicy="NEVER" layoutX="16.0" layoutY="14.0" prefHeight="321.0" prefWidth="812.0" style="-fx-border-style: solid;">
+               <content>
+                  <VBox fx:id="boxServicios" prefHeight="314.0" prefWidth="830.0" />
+               </content>
+            </ScrollPane>
+         </children>
+         <padding>
+            <Insets left="25.0" right="25.0" />
+         </padding></Pane>
+   </children>
+   <padding>
+      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+   </padding>
+</VBox>

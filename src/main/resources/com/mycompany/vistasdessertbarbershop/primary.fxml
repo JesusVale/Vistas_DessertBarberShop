@@ -29,7 +29,7 @@
             <Label prefHeight="18.0" prefWidth="512.0" HBox.hgrow="ALWAYS" />
             <HBox alignment="CENTER_RIGHT" prefHeight="70.0" prefWidth="114.0" spacing="10.0">
                <children>
-                  <Button mnemonicParsing="false" prefHeight="36.0" prefWidth="38.0" style="-fx-background-color: black;" styleClass="boton-hover" stylesheets="@styles.css" HBox.hgrow="ALWAYS">
+                  <Button fx:id="btnCasa" mnemonicParsing="false" onAction="#mostrarPantallaEmpleados" prefHeight="36.0" prefWidth="38.0" style="-fx-background-color: black;" styleClass="boton-hover" stylesheets="@styles.css" HBox.hgrow="ALWAYS">
                      <graphic>
                         <FontAwesomeIconView fill="WHITE" glyphName="HOME" size="25" wrappingWidth="23.14274311065674" />
                      </graphic>

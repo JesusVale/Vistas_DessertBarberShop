@@ -78,9 +78,9 @@ public class CitaFrmController implements Initializable{
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        llenarComboBoxClientes();
-        llenarComboBoxEmpleado();
-        llenarComboBoxServicio();
+        //llenarComboBoxClientes();
+        //llenarComboBoxEmpleado();
+        //llenarComboBoxServicio();
     }
     
     public void initComponents(Cita cita){

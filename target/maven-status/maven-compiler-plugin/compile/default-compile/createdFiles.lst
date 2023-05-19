@@ -1,6 +1,14 @@
+com\mycompany\vistasdessertbarbershop\AgregarEmpleadoFrmController.class
+com\mycompany\vistasdessertbarbershop\MenuEmpleadosController.class
+com\mycompany\vistasdessertbarbershop\PrimaryController$1.class
+styles\Pruebas.class
+com\mycompany\vistasdessertbarbershop\AdministrarProductosFrmController.class
+com\mycompany\vistasdessertbarbershop\AdministrarClientesFrmController.class
 com\mycompany\vistasdessertbarbershop\PrimaryController.class
 com\mycompany\vistasdessertbarbershop\App.class
 com\mycompany\vistasdessertbarbershop\CitaFrmController.class
-com\mycompany\vistasdessertbarbershop\PrimaryController$1.class
-styles\Pruebas.class
 com\mycompany\vistasdessertbarbershop\PrimaryController$2.class
+com\mycompany\vistasdessertbarbershop\AdministrarServiciosFrmController.class
+com\mycompany\vistasdessertbarbershop\MenuPrincipalFrmController.class
+com\mycompany\vistasdessertbarbershop\MenuServiciosController.class
+com\mycompany\vistasdessertbarbershop\MenuClientesController.class

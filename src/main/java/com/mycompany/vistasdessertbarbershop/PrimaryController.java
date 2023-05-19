@@ -52,6 +52,9 @@ public class PrimaryController implements Initializable {
     private Button buscarBtn;
     
     @FXML
+    private Button btnCasa;
+    
+    @FXML
     private HBox buscadorBox;
     
     @FXML
@@ -264,6 +267,22 @@ public class PrimaryController implements Initializable {
         this.buscador = null;
         this.llenarVBox(this.logicaNegocio.obtenerCitasPorEmpleadoClienteFecha(fechaActual, empleado, buscador));
         
+    }
+    
+    public void mostrarPantallaEmpleados(){
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/mycompany/vistasdessertbarbershop/AdministrarClientesFrm.fxml"));
+        try{
+            Parent root= loader.load();
+            Scene scene= new Scene(root);
+            Stage stage= new Stage();
+            stage.setScene(scene);
+            stage.show();
+            
+            Stage stage2= (Stage) this.btnCasa.getScene().getWindow();
+            stage2.close();
+        }catch(IOException ex){
+            Logger.getLogger(PrimaryController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public void mostrarCitasEmpleado(){

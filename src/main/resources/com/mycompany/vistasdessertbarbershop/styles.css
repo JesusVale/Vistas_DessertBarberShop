@@ -36,3 +36,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
     -fx-background-color: #303030;
     -fx-cursor: hand;
 }
+
+.image-view-with-border {
+    -fx-border-color: black;
+    -fx-border-width: 2px;
+}
